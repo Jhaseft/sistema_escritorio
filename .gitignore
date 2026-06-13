@@ -1,0 +1,22 @@
+# Secretos y config local (cada PC tiene la suya) -> usar config.example.json
+config.json
+
+# Base de datos local (buffer de fichajes de cada PC)
+attendance.db
+attendance.db-journal
+attendance.db-wal
+attendance.db-shm
+
+# Logs y salidas
+logs/
+exports/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Sistema
+Thumbs.db
+desktop.ini

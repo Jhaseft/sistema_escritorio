@@ -1,0 +1,18 @@
+{
+  "device": {
+    "ip": "192.168.0.118",
+    "port": 37777,
+    "user": "admin",
+    "password": "CAMBIA-ESTA-CLAVE"
+  },
+  "sdk_dir": "D:\\AttendanceBridge\\sdk",
+  "db_path": "D:\\AttendanceBridge\\attendance.db",
+
+  "realtime": {
+    "enabled": true,
+    "url": "https://TU-SISTEMA-WEB/api/attendance",
+    "auth_header": "Authorization",
+    "auth_value": "Bearer PON-TU-TOKEN-AQUI",
+    "timeout": 10
+  }
+}

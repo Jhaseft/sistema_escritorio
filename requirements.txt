@@ -1,0 +1,3 @@
+# AttendanceBridge no requiere paquetes externos.
+# Usa solo la libreria estandar de Python 3 (urllib, sqlite3, ctypes, json...).
+# Solo necesitas Python 3 (64-bit).
