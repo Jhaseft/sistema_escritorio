@@ -13,6 +13,9 @@ import urllib.request, urllib.error
 BASE = os.path.dirname(os.path.abspath(__file__))
 CFG = json.load(open(os.path.join(BASE, "config.json"), encoding="utf-8"))
 RT = CFG.get("realtime", {})
+DB_PATH = CFG.get("db_path") or os.path.join(BASE, "attendance.db")
+if not os.path.isdir(os.path.dirname(DB_PATH) or "."):
+    DB_PATH = os.path.join(BASE, "attendance.db")
 
 SEND_COLS = ["id","event_time","event_date","user_id","card_no","method","method_name",
              "status","door","direction","direction_name","attendance_state",
@@ -39,7 +42,7 @@ def sample_payload():
     }
 
 def last_real_payload():
-    con = sqlite3.connect(CFG["db_path"])
+    con = sqlite3.connect(DB_PATH)
     row = con.execute(
         f"SELECT {','.join(SEND_COLS)} FROM events ORDER BY id DESC LIMIT 1").fetchone()
     if not row:

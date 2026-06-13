@@ -11,10 +11,18 @@ from ctypes import (c_int, c_uint, c_long, c_char, c_byte, c_void_p, c_longlong,
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 CFG = json.load(open(os.path.join(BASE, "config.json"), encoding="utf-8"))
-SDK_DIR = CFG["sdk_dir"]
 DEV = CFG["device"]
-DB_PATH = CFG["db_path"]
 RT = CFG.get("realtime", {})
+
+# Rutas PORTABLES: por defecto usan la propia carpeta del proyecto (BASE), asi
+# funciona sin tocar nada al copiarlo a otra PC. Solo se respeta lo de config.json
+# si esa ruta realmente existe (si no, se cae a la carpeta local).
+SDK_DIR = CFG.get("sdk_dir") or os.path.join(BASE, "sdk")
+if not os.path.isdir(SDK_DIR):
+    SDK_DIR = os.path.join(BASE, "sdk")
+DB_PATH = CFG.get("db_path") or os.path.join(BASE, "attendance.db")
+if not os.path.isdir(os.path.dirname(DB_PATH) or "."):
+    DB_PATH = os.path.join(BASE, "attendance.db")
 LOG_PATH = os.path.join(BASE, "logs", "capture.log")
 os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
 

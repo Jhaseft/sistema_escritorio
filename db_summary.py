@@ -1,7 +1,10 @@
 import sqlite3, json, os
 BASE = os.path.dirname(os.path.abspath(__file__))
 c = json.load(open(os.path.join(BASE, "config.json"), encoding="utf-8"))
-con = sqlite3.connect(c["db_path"])
+DB_PATH = c.get("db_path") or os.path.join(BASE, "attendance.db")
+if not os.path.isdir(os.path.dirname(DB_PATH) or "."):
+    DB_PATH = os.path.join(BASE, "attendance.db")
+con = sqlite3.connect(DB_PATH)
 total = con.execute("SELECT COUNT(*) FROM events").fetchone()[0]
 hoy = con.execute("SELECT COUNT(*) FROM events WHERE event_date=date('now','localtime')").fetchone()[0]
 print(f"Total fichajes en la base: {total}   (hoy: {hoy})")
