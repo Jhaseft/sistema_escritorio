@@ -220,7 +220,19 @@ MSG_CB = MSG_CB_TYPE(on_message)
 # auto-reconnect callback
 RECON_CB_TYPE = WINFUNCTYPE(None, c_longlong, c_char_p, c_long, c_void_p)
 def on_reconnect(lLoginID, ip, port, user):
-    log(f"RECONECTADO al equipo (handle={lLoginID})")
+    # Tras reconectar (caida de red, o al despertar la PC de suspension) el handle de
+    # login revive pero la suscripcion de eventos en vivo queda MUERTA: el equipo se ve
+    # por red pero los fichajes ya no llegan. Hay que re-armar la escucha explicitamente.
+    try:
+        dll.CLIENT_StopListen(lLoginID)   # limpia la suscripcion vieja (por si quedo a medias)
+    except Exception:
+        pass
+    ok = dll.CLIENT_StartListenEx(lLoginID)
+    if ok:
+        log(f"RECONECTADO al equipo (handle={lLoginID}); suscripcion de fichajes RE-ARMADA")
+    else:
+        log(f"RECONECTADO al equipo (handle={lLoginID}); FALLO re-armar suscripcion "
+            f"err={hex(dll.CLIENT_GetLastError())}")
 RECON_CB = RECON_CB_TYPE(on_reconnect)
 
 # disconnect callback
